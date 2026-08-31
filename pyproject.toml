@@ -1,0 +1,23 @@
+[project]
+name = "currency-exchange"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "TheEmpressDiadema", email = "mauhkpaffftep@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "mypy>=2.1.0",
+    "ruff>=0.16.5",
+]
+
+[project.scripts]
+currency-exchange = "currency_exchange:main"
+
+[build-system]
+requires = ["uv_build>=0.11.26,<0.12.0"]
+build-backend = "uv_build"
+
+[tool.mypy]
+strict = true

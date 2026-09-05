@@ -166,8 +166,6 @@ class ExchangeRateSqliteRepository(ExchangeRateRepository):
             except sqlite3.IntegrityError:
                 raise CantInsertExchangeRate("Can't insert ExchangeRate - Db broken :(")
 
-        print(result)
-
         if result is None:
             raise ExchangeRateAlreadyExists("Can't insert ExchangeRate - already exists")
 

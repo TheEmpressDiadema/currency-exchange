@@ -27,7 +27,8 @@ def create_handler(router: Router) -> type[BaseHTTPRequestHandler]:
         def _send_response(self, response: HttpResponse) -> None:
             self.send_response(response.code)
 
-            self.send_header(response.keyword, response.value)
+            for key, value in response.headers.items():
+                self.send_header(key, value)
             self.end_headers()
 
             self.wfile.write(response.message.encode('utf-8'))

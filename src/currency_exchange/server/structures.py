@@ -1,5 +1,5 @@
-from dataclasses import dataclass, field
 from typing import Any
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -17,5 +17,11 @@ class HttpResponse:
 
     code: int
     message: str
-    keyword: str = field(default="Content-type")
-    value: str = field(default="application/json")
+    headers: dict[str, str] = field(
+        default_factory=lambda : (
+            {
+                "Content-type" : "application/json",
+                "Access-Control-Allow-Origin" : "*"
+            }
+        )
+    )

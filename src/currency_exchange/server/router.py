@@ -1,5 +1,5 @@
-from collections.abc import Callable
 from dataclasses import dataclass
+from collections.abc import Callable
 
 from currency_exchange.server.structures import HttpRequest, HttpResponse
 
@@ -19,10 +19,33 @@ class Router:
         if route not in self._routes:
             self._routes.append(route)
 
-    def _match_route(self, request: HttpRequest) -> Route | None:
+    def _get_route(self, request: HttpRequest) -> Route | None:
+        request_path = request.path.split('/')[1:]
+
         for route in self._routes:
-            if route.method == request.method and request.path == route.path:
-                return route
+            route_path = route.path.split('/')[1:]
+
+            if request.method != route.method:
+                continue
+
+            if len(route_path) != len(request_path):
+                continue
+
+            is_match = True
+
+            for expected, requested in zip(route_path, request_path):
+                if expected.startswith('{') and expected.endswith('}'):
+                    continue
+                if expected != requested:
+                    is_match = False
+
+
+            if is_match:
+                return Route(
+                    method=route.method,
+                    path=request.path,
+                    func=route.func
+                )
         return None
 
     def execute_route(self, request: HttpRequest) -> HttpResponse:
@@ -30,8 +53,7 @@ class Router:
             code=404,
             message="Not Found"
         )
-        route = self._match_route(request)
+        route = self._get_route(request)
         if route is None:
             return response
-        response = route.func(request)
-        return response
+        return route.func(request)

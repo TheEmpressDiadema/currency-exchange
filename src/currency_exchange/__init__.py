@@ -40,7 +40,7 @@ def main() -> None:
     router.register_route(
         Route(
             method='GET',
-            path='/currency',
+            path='/currency/{code}',
             func=cur_controller.get_currency
         )
     )
@@ -61,7 +61,7 @@ def main() -> None:
     router.register_route(
         Route(
             method='GET',
-            path='/exchangeRate',
+            path='/exchangeRate/{codes}',
             func=exchange_rate_controller.get_exchange_rate
         )
     )
@@ -75,7 +75,7 @@ def main() -> None:
     router.register_route(
         Route(
             method='PATCH',
-            path='/exchangeRate',
+            path='/exchangeRate/{codes}',
             func=exchange_rate_controller.update_exchange_rate
         )
     )

@@ -7,10 +7,7 @@ authors = [
     { name = "TheEmpressDiadema", email = "mauhkpaffftep@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = [
-    "mypy>=2.1.0",
-    "ruff>=0.16.5",
-]
+dependencies = []
 
 [project.scripts]
 currency-exchange = "currency_exchange:main"

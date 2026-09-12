@@ -59,7 +59,7 @@ def create_handler(router: Router) -> type[BaseHTTPRequestHandler]:
 
             return HttpRequest(
                 method=self.command,
-                path=f'/{url.path.split('/')[1]}',
+                path=url.path,
                 body=body,
                 params=params,
                 path_params=path_params

@@ -77,4 +77,12 @@ def create_handler(router: Router) -> type[BaseHTTPRequestHandler]:
         def do_PATCH(self) -> None:
             self._handle_request(self._create_request())
 
+        def do_OPTIONS(self) -> None:
+            self._send_response(
+                HttpResponse(
+                    code=200,
+                    message="OK"
+                )
+            )
+
     return RequestHandler

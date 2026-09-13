@@ -19,8 +19,8 @@ def main() -> None:
     init_db(data_dir, data_file)
     router = Router()
 
-    currency_repo = CurrencySqliteRepository(f'{data_dir}\\{data_file}')
-    exchange_rate_repo = ExchangeRateSqliteRepository(f'{data_dir}\\{data_file}')
+    currency_repo = CurrencySqliteRepository(f'{data_dir}/{data_file}')
+    exchange_rate_repo = ExchangeRateSqliteRepository(f'{data_dir}/{data_file}')
 
     exchange_service = ExchangeService(exchange_rate_repo)
     currency_service = CurrencyService(currency_repo)
@@ -86,6 +86,6 @@ def main() -> None:
             func=exchange_controller.get_exchange
         )
     )
-
+    
     handler_class = create_handler(router)
     run_server('localhost', 8000, handler_class)

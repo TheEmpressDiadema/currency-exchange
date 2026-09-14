@@ -34,11 +34,7 @@ def create_handler(router: Router) -> type[BaseHTTPRequestHandler]:
             self.wfile.write(response.message.encode('utf-8'))
 
         def _parse_query(self, query: str) -> dict[str, Any]:
-            params = dict(parse_qsl(query))
-            for k,v in params.items():
-                if v.startswith('$'):
-                    params[k] = v[1:]
-            return params
+            return dict(parse_qsl(query))
 
         def _parse_path(self, path: str) -> dict[str, Any]:
             result: dict[str, Any] = {}

@@ -9,7 +9,7 @@ class HttpRequest:
     path: str
     body: dict[str, Any]
     params: dict[str, Any]
-    path_params: dict[str, Any]
+    path_params: dict[str, str | None]
 
 
 @dataclass

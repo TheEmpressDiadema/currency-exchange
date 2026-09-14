@@ -35,7 +35,7 @@ class ExchangeService:
         return ExchangeDTO(
             base_currency=CurrencyDTO.from_domain(exchange_rate.base_currency),
             target_currency=CurrencyDTO.from_domain(exchange_rate.target_currency),
-            rate=from_decimal(rate),
+            rate=from_decimal(to_decimal(1)/rate),
             amount=amount,
             converted_amount=from_decimal(result.quantize(Decimal('0.000001'), ROUND_HALF_UP))
         )

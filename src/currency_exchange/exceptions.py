@@ -18,3 +18,6 @@ class CantGetExchangeRate(Exception):
 
 class CantUpdateExchangeRate(Exception):
     ...
+
+class IncorrectInput(Exception):
+    ...

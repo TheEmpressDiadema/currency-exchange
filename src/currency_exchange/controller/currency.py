@@ -22,17 +22,29 @@ class CurrencyController:
         except (ValueError, CantInsertCurrency) as error:
             return HttpResponse(
                 code=400,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
         except CurrencyAlreadyExists as error:
             return HttpResponse(
                 code=409,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
         except Exception as error:
             return HttpResponse(
                 code=500,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
 
         return HttpResponse(
@@ -47,17 +59,29 @@ class CurrencyController:
         except ValueError as error:
             return HttpResponse(
                 code=400,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
         except CantGetCurrency as error:
             return HttpResponse(
                 code=404,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
         except Exception as error:
             return HttpResponse(
                 code=500,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
 
         return HttpResponse(
@@ -72,12 +96,20 @@ class CurrencyController:
         except CantGetCurrency as error:
             return HttpResponse(
                 code=404,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
         except Exception as error:
             return HttpResponse(
                 code=500,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
 
         return HttpResponse(

@@ -2,6 +2,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 
 from currency_exchange.server.structures import HttpRequest, HttpResponse
+from currency_exchange.view.encoder import create_view
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,9 @@ class Router:
     def execute_route(self, request: HttpRequest) -> HttpResponse:
         response = HttpResponse(
             code=404,
-            message="Not Found"
+            message=create_view(
+                {'message' : 'Not Found'}
+            )
         )
         route = self._get_route(request)
         if route is None:

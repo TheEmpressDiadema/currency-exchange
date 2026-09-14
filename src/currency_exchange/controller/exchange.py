@@ -36,12 +36,20 @@ class ExchangeController:
                 except CantGetExchangeRate as error:
                     return HttpResponse(
                         code=404,
-                        message=str(error)
+                        message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
                     )
         except Exception as error:
             return HttpResponse(
                 code=500,
-                message=str(error)
+                message=create_view(
+                    {
+                        'message' : str(error)
+                    }
+                )
             )
 
         return HttpResponse(

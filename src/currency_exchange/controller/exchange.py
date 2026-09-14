@@ -18,11 +18,10 @@ class ExchangeController:
             if all([
                 isinstance(base_currency_code, str),
                 isinstance(target_currency_code, str),
-                isinstance(amount, str) and amount.startswith('$')
+                isinstance(amount, str)
             ]):
                 base_currency_code = base_currency_code.strip()
                 target_currency_code = target_currency_code.strip()
-                amount = amount[1:]
             else:
                 raise IncorrectInput("Base and Target codes should be string, amount should be float after $ symbol")
 
@@ -34,7 +33,7 @@ class ExchangeController:
 
             try:
                 amount = float(amount)
-            except ValueError:
+            except (TypeError, ValueError):
                 raise IncorrectInput("Amount value should be float")
 
             dto = self._exchange_service.get_exchange(
@@ -65,11 +64,11 @@ class ExchangeController:
                             }
                         )
                     )
-        except KeyError as error:
+        except IncorrectInput as error:
             return HttpResponse(
                 code=400,
                 message=create_view(
-                    {'message' : f'One or more params are incorrect {str(error)}'}
+                    {'message' : str(error)}
                 )
             )
         except Exception as error:

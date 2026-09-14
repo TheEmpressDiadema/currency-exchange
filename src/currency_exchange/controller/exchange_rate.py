@@ -25,19 +25,31 @@ class ExchangeRateController:
             if all([
                 isinstance(base_currency_code, str),
                 isinstance(target_currency_code, str),
-                isinstance(rate, float)
+                isinstance(rate, str)
             ]):
                 base_currency_code = base_currency_code.strip()
                 target_currency_code = target_currency_code.strip()
+                rate = rate.strip()
             else:
                 raise IncorrectInput('One or more fields (baseCurrencyCode, targetCurrencyCode, rate) is incorrect')
+
+            if len(base_currency_code) == 0:
+                raise IncorrectInput('Base code should be 3 symbol length')
+
+            if len(target_currency_code) == 0:
+                raise IncorrectInput('Target code should be 3 symbol length')
+
+            try:
+                rate = float(rate)
+            except (TypeError, ValueError):
+                raise IncorrectInput("Incorrect rate value input")
 
             dto = self._exchange_rate_service.create_exchange_rate(
                     base_currency_code,
                     target_currency_code,
                     rate
                     )
-        except (CantInsertExchangeRate, IncorrectInput) as error:
+        except (IncorrectInput, CantInsertExchangeRate, ValueError) as error:
            return HttpResponse(
                code=400,
                message=create_view(
@@ -58,7 +70,9 @@ class ExchangeRateController:
         except CantGetCurrency as error:
             return HttpResponse(
                 code=404,
-                message=str(error)
+                message=create_view(
+                    {'message' : str(error)}
+                )
             )
         except Exception as error:
             return HttpResponse(
@@ -84,29 +98,38 @@ class ExchangeRateController:
             else:
                 raise IncorrectInput('Codes param is empty')
 
-            if len(codes) == 0:
-                raise IncorrectInput('Incorrect codes input')
+            if len(codes) < 6:
+                raise IncorrectInput('Incorrect code pair input')
 
             base_currency_code = codes[:3]
             target_currency_code = codes[3:]
 
             rate = request.body.get('rate')
 
-            if not isinstance(rate, float):
-                raise IncorrectInput('Rate field should be float value')
+            try:
+                rate = float(rate)
+            except (TypeError, ValueError):
+                raise IncorrectInput("Incorrect rate input")
 
             dto = self._exchange_rate_service.update_exchange_rate(
                 base_currency_code,
                 target_currency_code,
                 rate
             )
-        except (CantUpdateExchangeRate, ValueError, IncorrectInput) as error:
+        except (IncorrectInput, CantUpdateExchangeRate, ValueError) as error:
             return HttpResponse(
                 code=400,
                 message=create_view(
                     {
                         'message' : str(error)
                     }
+                )
+            )
+        except CantGetCurrency as error:
+            return HttpResponse(
+                code=404,
+                message=create_view(
+                    {'message' : str(error)}
                 )
             )
         except Exception as error:
@@ -132,12 +155,12 @@ class ExchangeRateController:
                 codes = codes.strip()
             else:
                 raise IncorrectInput('Codes should be str value')
+
+            if len(codes) < 6:
+                IncorrectInput('Incorrect code pair input')
             
             base_currency_code = codes[:3]
             target_currency_code = codes[3:]
-
-            if len(base_currency_code) != 3 or len(target_currency_code) != 3:
-                raise IncorrectInput('Base currency code, target currency code should be 3 sybmol length')
 
             dto = self._exchange_rate_service.get_exchange_rate(
                 base_currency_code,

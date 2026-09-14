@@ -2,6 +2,7 @@ from currency_exchange.exceptions import (
     CantGetCurrency,
     CantInsertCurrency,
     CurrencyAlreadyExists,
+    IncorrectInput
 )
 from currency_exchange.server.structures import HttpRequest, HttpResponse
 from currency_exchange.services.currency import CurrencyService
@@ -15,11 +16,23 @@ class CurrencyController:
 
     def create_currency(self, request: HttpRequest) -> HttpResponse:
         try:
-            code = request.body['code']
-            name = request.body['name']
-            sign = request.body['sign']
+            code = request.body.get('code')
+            name = request.body.get('name')
+            sign = request.body.get('sign')
+
+            if not all([
+                isinstance(code, str),
+                isinstance(name, str), 
+                isinstance(sign, str)
+                ]):
+                code = code.strip()
+                name = name.strip()
+                sign = sign.strip()
+            else:
+                raise IncorrectInput("One or more params (code, name, sign) are incorrect")
+            
             dto = self._currency_service.create_currency(code, name, sign)
-        except (ValueError, CantInsertCurrency) as error:
+        except (ValueError, CantInsertCurrency, IncorrectInput) as error:
             return HttpResponse(
                 code=400,
                 message=create_view(
@@ -54,9 +67,16 @@ class CurrencyController:
 
     def get_currency(self, request: HttpRequest) -> HttpResponse:
         try:
-            code = request.path_params['code']
+            code = request.path_params.get('code')
+
+            if isinstance(code, str):
+                code = code.strip()
+            else:
+                raise IncorrectInput('Incorrect code input')
+
             dto = self._currency_service.get_currency(code)
-        except ValueError as error:
+
+        except IncorrectInput as error:
             return HttpResponse(
                 code=400,
                 message=create_view(
@@ -96,11 +116,7 @@ class CurrencyController:
         except CantGetCurrency as error:
             return HttpResponse(
                 code=404,
-                message=create_view(
-                    {
-                        'message' : str(error)
-                    }
-                )
+                message=str(error)
             )
         except Exception as error:
             return HttpResponse(

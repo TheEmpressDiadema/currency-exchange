@@ -20,7 +20,7 @@ class CurrencyController:
             name = request.body.get('name')
             sign = request.body.get('sign')
 
-            if not all([
+            if all([
                 isinstance(code, str),
                 isinstance(name, str), 
                 isinstance(sign, str)

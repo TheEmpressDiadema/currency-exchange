@@ -3,7 +3,7 @@
 `MVC(s)` - Model View Controller (service) architecture pattern.  
 `REST API` - Web architecture style.  
 `SQL` - Relational databases management system.
-`Deploy basics` - (literally basics, no docker, using ssh and sftp protocols :P)
+`Deploy basics`
 
 ## Technologies:
 Back-end: `python http.server`  

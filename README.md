@@ -2,7 +2,7 @@
 <b>Implementation of the study project of the community backend roadmap aimed at building of knowlege of:</b>  
 `MVC(s)` - Model View Controller (service) architecture pattern.  
 `REST API` - Web architecture style.  
-`SQL` - Relational databases management system.
+`SQL` - Relational databases management system.  
 `Deploy basics`
 
 ## Technologies:
